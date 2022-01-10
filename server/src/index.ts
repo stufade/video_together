@@ -1,8 +1,10 @@
+import "express-async-errors";
 import { Server } from "socket.io";
 import express from "express";
 import { createClient } from "redis";
-import roomsRouter from "./routes/rooms";
 import cors from "cors";
+import roomsRouter from "./routes/rooms";
+import errorHandler from "./middlewares/error-handler";
 
 export const redisClient = createClient();
 const main = async () => {
@@ -22,6 +24,7 @@ const main = async () => {
 	app.use(express.json());
 
 	app.use("/api/rooms", roomsRouter);
+	app.use(errorHandler);
 
 	io.on("connection", (socket) => {
 		console.log("a user connected");

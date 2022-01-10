@@ -1,15 +1,24 @@
 import { Request, Response } from "express";
 import crypto from "crypto";
 import { redisClient } from "../index";
+import NotFound from "../errors/NotFound";
 
 export const getVideoID = async (
 	req: Request<{}, {}, { roomID: string }>,
 	res: Response
 ) => {
 	const { roomID } = req.body;
-	const videoID = await redisClient.get(roomID);
+	try {
+		const videoID = await redisClient.get(roomID);
 
-	res.json({videoID});
+		if (!videoID) {
+			throw new Error;
+		}
+
+		res.json({ videoID });
+	} catch {
+		throw new NotFound("No room with this ID");
+	}
 };
 
 export const createRoom = async (
