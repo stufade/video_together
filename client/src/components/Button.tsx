@@ -5,15 +5,24 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ children, onClick, className }) => {
 	return (
-		<button
-			className={`${className} 
-            	text-white gradient 
-            	text-xl py-2 px-7 rounded-full transform transition-all duration-500 hover:scale-[0.97]
-        	`}
-			onClick={onClick}
+		<div
+			className={`
+				${className}
+				relative bg-white rounded-full dark:gradient grid place-items-center
+				after:content-[''] after:absolute after:-z-10 after:rounded-full after:left-[-2px] after:right-[-2px] after:top-[-2px] after:bottom-[-2px] after:gradient
+				transition-shadow duration-500 hover:shadow-violet-600/25 hover:shadow-xl
+			`}
 		>
-			{children}
-		</button>
+			<button
+				className="
+            		font-bold tracking-wider gradient bg-clip-text text-transparent dark:text-white dark:bg-clip-border
+            		text-xl py-2 px-7 rounded-full transform transition-all duration-500
+        		"
+				onClick={onClick}
+			>
+				{children}
+			</button>
+		</div>
 	);
 };
 

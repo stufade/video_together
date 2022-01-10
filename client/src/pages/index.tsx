@@ -1,20 +1,21 @@
 import type { NextPage } from "next";
+import createJoinRoomHandler from "../api/createJoinRoomHandler";
 import createNewRoomHandler from "../api/createNewRoomHandler";
 import InputForm from "../components/InputForm";
 
 const Home: NextPage = () => {
 	return (
-		<div className="flex flex-col gap-14">
+		<div className="flex flex-col gap-16">
 			<InputForm
 				label="Video ID"
-				buttonText="Generate Room"
+				buttonText="Create Room"
 				createSubmit={createNewRoomHandler}
 			/>
-			{/* <InputForm
+			<InputForm
 				label="Room ID"
 				buttonText="Join Room"
-				onSubmit={() => undefined}
-			/> */}
+				createSubmit={createJoinRoomHandler}
+			/>
 		</div>
 	);
 };

@@ -3,7 +3,6 @@ import axios from "axios";
 
 const createNewRoomHandler = (videoID: string) => {
 	const router = useRouter();
-
 	return async () => {
 		try {
 			const {

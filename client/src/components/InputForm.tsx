@@ -24,7 +24,7 @@ const InputForm: React.FC<InputFormProps> = ({
 				className="
                     relative flex items-center mr-5
                     after:content-[''] after:h-[3px] after:absolute after:left-0 after:right-0 after:-bottom-0 after:gradient
-            "
+            	"
 			>
 				<label className="block text-lg font-bold absolute left-1 bottom-[120%]">
 					{label}

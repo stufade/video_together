@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 		return { props: { videoID } };
 	} catch (e) {
-		console.error(e);
+		console.log(e);
 
 		return {
 			redirect: {
