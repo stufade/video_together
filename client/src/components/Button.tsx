@@ -1,5 +1,5 @@
 interface ButtonProps {
-	onClick: () => void;
+	onClick?: () => void;
 	className?: string;
 }
 
@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({ children, onClick, className }) => {
             		font-bold tracking-wider gradient bg-clip-text text-transparent dark:text-white dark:bg-clip-border
             		text-xl py-2 px-7 rounded-full transform transition-all duration-500
         		"
-				onClick={onClick}
+				onClick={onClick && null}
 			>
 				{children}
 			</button>

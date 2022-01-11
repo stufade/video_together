@@ -32,10 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		console.log(e);
 
 		return {
-			redirect: {
-				destination: "/",
-				permanent: false,
-			},
+			notFound: true
 		};
 	}
 };

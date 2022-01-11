@@ -1,9 +1,12 @@
 import { useRouter } from "next/router";
 import axios from "axios";
+import { FormEvent } from "react";
 
 const createNewRoomHandler = (videoID: string) => {
 	const router = useRouter();
-	return async () => {
+	return async (e: FormEvent) => {
+		e.preventDefault();
+
 		try {
 			const {
 				data: { roomID },
