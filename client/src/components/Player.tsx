@@ -56,6 +56,7 @@ const Player: React.FC<PlayerProps> = ({ videoID }) => {
 		lastData = data;
 	};
 
+	// 640 / 360
 	return (
 		<div>
 			<YouTube
@@ -67,6 +68,8 @@ const Player: React.FC<PlayerProps> = ({ videoID }) => {
 				onPlay={handlePlayVideo}
 				onStateChange={hadnleStateChange}
 				onReady={(e) => e.target.playVideo}
+				className="w-full h-full"
+				containerClassName="w-[700px] aspect-video"
 				ref={playerRef}
 			/>
 		</div>

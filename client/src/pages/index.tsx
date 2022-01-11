@@ -9,6 +9,7 @@ const Home: NextPage = () => {
 			<InputForm
 				label="Video ID"
 				buttonText="Create Room"
+				placeholder="Paste link or ID"
 				createSubmit={createNewRoomHandler}
 			/>
 			<InputForm

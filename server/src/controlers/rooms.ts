@@ -11,8 +11,10 @@ export const getVideoID = async (
 	try {
 		const videoID = await redisClient.get(roomID);
 
+		redisClient.expire(roomID, 60 * 60 * 4);
+
 		if (!videoID) {
-			throw new Error;
+			throw new Error();
 		}
 
 		res.json({ videoID });

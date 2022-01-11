@@ -53,7 +53,7 @@ const main = async () => {
 				}
 			}
 			if (io.sockets.adapter.rooms.get(roomID)?.size === 1) {
-				redisClient.del(roomID);
+				redisClient.expire(roomID, 60 * 5);
 			}
 		});
 	});
