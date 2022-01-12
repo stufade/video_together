@@ -27,7 +27,7 @@ const main = async () => {
 	app.use(errorHandler);
 
 	io.on("connection", (socket) => {
-		console.log("a user connected");
+		console.log("a user connected", socket.id);
 
 		socket.on("start", (time: number, roomID: string) => {
 			socket.to(roomID).emit("start", time);
@@ -44,6 +44,11 @@ const main = async () => {
 		socket.on("newUser", (roomID: string) => {
 			socket.join(roomID);
 		});
+
+		socket.on("message", (roomId: string, text: string) => {
+			socket.emit("message", text, true);
+			socket.to(roomId).emit("message", text, false);
+		})
 
 		socket.on("disconnecting", () => {
 			let roomID = "";

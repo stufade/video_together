@@ -21,7 +21,6 @@ const InputForm: React.FC<InputFormProps> = ({
 		let newText = value
 		if (value.includes("youtube") && value.includes("/watch?v=")) {
 			newText = value.substring(value.indexOf("/watch?v=") + 9, value.indexOf("/watch?v=") + 20);
-			console.log(newText);
 		}
 		setText(newText);
 	};

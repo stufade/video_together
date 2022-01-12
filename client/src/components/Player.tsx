@@ -1,17 +1,20 @@
 import YouTube from "react-youtube";
-import socket from "../constants/socket";
 import { useEffect, useRef } from "react";
+import { Socket } from "socket.io-client";
+import useRoomID from "../hooks/useRoomID";
 
 interface PlayerProps {
 	videoID: string;
+	socket: Socket;
 }
 
-const Player: React.FC<PlayerProps> = ({ videoID }) => {
-	let roomID: string;
+const Player: React.FC<PlayerProps> = ({ videoID, socket }) => {
+	const roomID = useRoomID();	
 	const playerRef = useRef<YouTube>(null);
 
 	useEffect(() => {
-		roomID = window.location.pathname.slice(1);
+		if (!socket) return;
+		
 		const player = playerRef?.current.getInternalPlayer();
 
 		socket.emit("newUser", roomID);
@@ -30,7 +33,7 @@ const Player: React.FC<PlayerProps> = ({ videoID }) => {
 			player.seekTo(time, true);
 			player.playVideo();
 		});
-	}, []);
+	}, [socket]);
 
 	const handlePauseVideo = async () => {
 		const currentTime = await playerRef.current
@@ -56,23 +59,20 @@ const Player: React.FC<PlayerProps> = ({ videoID }) => {
 		lastData = data;
 	};
 
-	// 640 / 360
 	return (
-		<div>
-			<YouTube
-				videoId={videoID}
-				opts={{
-					host: "https://www.youtube-nocookie.com",
-				}}
-				onPause={handlePauseVideo}
-				onPlay={handlePlayVideo}
-				onStateChange={hadnleStateChange}
-				onReady={(e) => e.target.playVideo}
-				className="w-full h-full"
-				containerClassName="w-[700px] aspect-video"
-				ref={playerRef}
-			/>
-		</div>
+		<YouTube
+			videoId={videoID}
+			opts={{
+				host: "https://www.youtube-nocookie.com",
+			}}
+			onPause={handlePauseVideo}
+			onPlay={handlePlayVideo}
+			onStateChange={hadnleStateChange}
+			onReady={(e) => e.target.playVideo}
+			className="w-full h-full"
+			containerClassName="h-[400px] aspect-video max-w-full"
+			ref={playerRef}
+		/>
 	);
 };
 
