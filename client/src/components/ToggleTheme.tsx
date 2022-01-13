@@ -1,11 +1,15 @@
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
-const ToggleTheme: React.FC = () => {
+interface ToggleThemeProps {
+	className?: string;
+}
+
+const ToggleTheme: React.FC<ToggleThemeProps> = ({ className }) => {
 	const { theme, setTheme } = useTheme();
 
 	return (
-		<div className="absolute right-10 top-10 h-7 w-7">
+		<div className={`${className}`}>
 			<button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
 				<Image
 					src={`/${theme === "light" ? "moon.svg" : "sun.svg"}`}

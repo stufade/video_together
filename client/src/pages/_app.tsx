@@ -2,11 +2,11 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import ToggleTheme from "../components/ToggleTheme";
 import { ThemeProvider } from "next-themes";
-import { ReactElement, ReactNode } from "react";
 import { NextPage } from "next/types";
 
 type NextPageWithLayout = NextPage & {
 	containerClassName?: string;
+	toggleThemeClassName?: string;
 };
 
 type AppPropsWithLayout = AppProps & {
@@ -15,6 +15,7 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 	const containerClassName = Component.containerClassName;
+	const toggleThemeClassName = Component.toggleThemeClassName;
 
 	return (
 		<ThemeProvider attribute="class">
@@ -25,7 +26,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 						: "grid"
 				} h-screen dark:bg-dark dark:text-white place-items-center relative`}
 			>
-				<ToggleTheme />
+				<ToggleTheme className={`absolute right-10 top-10 h-7 w-7 ${toggleThemeClassName}`} />
 				<Component {...pageProps} />
 			</div>
 		</ThemeProvider>

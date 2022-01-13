@@ -1,8 +1,10 @@
-// @ts-ignore
-import { GetServerSideProps, NextPageWithLayout } from "next";
+import { GetServerSideProps } from "next";
+import type { NextPageWithLayout } from "../types/page";
 import Player from "../components/Player";
 import axios from "axios";
 import Chat from "../components/Chat";
+import Button from "../components/Button";
+import ToggleTheme from "../components/ToggleTheme";
 import { useEffect } from "react";
 import useSocket from "../hooks/useSocket";
 import useRoomID from "../hooks/useRoomID";
@@ -23,12 +25,19 @@ const VideoPage: NextPageWithLayout<VideoPageProps> = ({ videoID }) => {
 	return (
 		<div className="flex flex-col lg:flex-row gap-5 sm:gap-10">
 			<Player socket={socket} videoID={videoID} />
-			<Chat socket={socket} />
+			<div className="relative mx-2 md:mx-0">
+				<Chat socket={socket} />
+				<div className="absolute w-full mt-4 flex flex-col gap-5">
+					<Button className="flex-1">Copy Link</Button>
+					<ToggleTheme className="md:hidden self-center aspect-[1] w-[44px] relative" />
+				</div>
+			</div>
 		</div>
 	);
 };
 
 VideoPage.containerClassName = "block md:grid";
+VideoPage.toggleThemeClassName = "hidden md:block";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const {
