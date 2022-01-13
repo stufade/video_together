@@ -5,6 +5,7 @@ import axios from "axios";
 import Chat from "../components/Chat";
 import { useEffect } from "react";
 import useSocket from "../hooks/useSocket";
+import useRoomID from "../hooks/useRoomID";
 
 interface VideoPageProps {
 	videoID: string;
@@ -12,10 +13,11 @@ interface VideoPageProps {
 
 const VideoPage: NextPageWithLayout<VideoPageProps> = ({ videoID }) => {
 	const socket = useSocket("http://localhost:5000");
+	const roomID = useRoomID();
 
 	useEffect(() => {
 		if (!socket) return;
-		socket.emit("newUser", window.location.pathname.slice(1));
+		socket.emit("newUser", roomID);
 	}, [socket]);
 
 	return (

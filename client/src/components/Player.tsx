@@ -1,5 +1,5 @@
 import YouTube from "react-youtube";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import useRoomID from "../hooks/useRoomID";
 
@@ -9,12 +9,13 @@ interface PlayerProps {
 }
 
 const Player: React.FC<PlayerProps> = ({ videoID, socket }) => {
-	const roomID = useRoomID();	
+	const roomID = useRoomID();
 	const playerRef = useRef<YouTube>(null);
+	const [spin, setSpin] = useState(true);
 
 	useEffect(() => {
 		if (!socket) return;
-		
+
 		const player = playerRef?.current.getInternalPlayer();
 
 		socket.emit("newUser", roomID);
@@ -60,19 +61,28 @@ const Player: React.FC<PlayerProps> = ({ videoID, socket }) => {
 	};
 
 	return (
-		<YouTube
-			videoId={videoID}
-			opts={{
-				host: "https://www.youtube-nocookie.com",
-			}}
-			onPause={handlePauseVideo}
-			onPlay={handlePlayVideo}
-			onStateChange={hadnleStateChange}
-			onReady={(e) => e.target.playVideo}
-			className="w-full h-full"
-			containerClassName="h-[400px] aspect-video max-w-full"
-			ref={playerRef}
-		/>
+		<>
+			{spin && (
+				<div className="w-[700px] aspect-video max-w-full grid place-items-center">
+					<div className="loader">Loading...</div>
+				</div>
+			)}
+			<YouTube
+				videoId={videoID}
+				opts={{
+					host: "https://www.youtube-nocookie.com",
+				}}
+				onPause={handlePauseVideo}
+				onPlay={handlePlayVideo}
+				onStateChange={hadnleStateChange}
+				onReady={() => setSpin(false)}
+				className="w-full h-full"
+				containerClassName={`w-[700px] aspect-video max-w-full ${
+					spin && "hidden"
+				}`}
+				ref={playerRef}
+			/>
+		</>
 	);
 };
 
