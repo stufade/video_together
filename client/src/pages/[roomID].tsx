@@ -5,7 +5,7 @@ import axios from "axios";
 import Chat from "../components/Chat";
 import Button from "../components/Button";
 import ToggleTheme from "../components/ToggleTheme";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
 import useRoomID from "../hooks/useRoomID";
 
@@ -14,6 +14,8 @@ interface VideoPageProps {
 }
 
 const VideoPage: NextPageWithLayout<VideoPageProps> = ({ videoID }) => {
+	const [buttonText, setButtonText] = useState("Copy Link")
+
 	const socket = useSocket("http://localhost:5000");
 	const roomID = useRoomID();
 
@@ -22,13 +24,19 @@ const VideoPage: NextPageWithLayout<VideoPageProps> = ({ videoID }) => {
 		socket.emit("newUser", roomID);
 	}, [socket]);
 
+	const handleCopyLink = () => {
+		navigator.clipboard.writeText(window.location.href);
+		setButtonText("Copied!");
+		setTimeout(() => setButtonText("Copy Link"), 3500);
+	}
+
 	return (
 		<div className="flex flex-col lg:flex-row gap-5 sm:gap-10">
 			<Player socket={socket} videoID={videoID} />
 			<div className="relative mx-2 md:mx-0">
 				<Chat socket={socket} />
 				<div className="absolute w-full mt-4 flex flex-col gap-5">
-					<Button className="flex-1">Copy Link</Button>
+					<Button className="flex-1" onClick={handleCopyLink}>{buttonText}</Button>
 					<ToggleTheme className="md:hidden self-center aspect-[1] w-[44px] relative" />
 				</div>
 			</div>

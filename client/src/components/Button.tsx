@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({ children, onClick, className }) => {
             		w-full font-bold tracking-wider dark:bg-none gradient bg-clip-text text-transparent dark:text-white dark:bg-clip-border
             		text-xl py-2 px-7 rounded-full transform transition-all duration-500
         		"
-				onClick={onClick && null}
+				onClick={onClick ? onClick : null}
 			>
 				{children}
 			</button>

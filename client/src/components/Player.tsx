@@ -63,7 +63,7 @@ const Player: React.FC<PlayerProps> = ({ videoID, socket }) => {
 	return (
 		<>
 			{spin && (
-				<div className="w-[700px] aspect-video max-w-full grid place-items-center">
+				<div className="w-[700px] overflow-hidden aspect-video max-w-full grid place-items-center">
 					<div className="loader">Loading...</div>
 				</div>
 			)}
