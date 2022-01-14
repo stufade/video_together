@@ -27,7 +27,6 @@ const Player: React.FC<PlayerProps> = ({ videoID, socket }) => {
 
 		socket.on("play", () => {
 			player.playVideo();
-			console.log("play", player);
 		});
 
 		socket.on("start", (time: number) => {
@@ -50,13 +49,13 @@ const Player: React.FC<PlayerProps> = ({ videoID, socket }) => {
 	let lastData = -2;
 
 	const hadnleStateChange = async ({ data }: { data: number }) => {
-		console.log(data);
 		if (data === -1 || (lastData === 2 && data === 1)) {
 			const currentTime = await playerRef.current
 				.getInternalPlayer()
 				.getCurrentTime();
 			socket.emit("start", currentTime, roomID);
 		}
+		
 		lastData = data;
 	};
 
