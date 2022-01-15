@@ -8,13 +8,16 @@ import ToggleTheme from "../components/ToggleTheme";
 import { useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
 import useRoomID from "../hooks/useRoomID";
+import HideChatVertical from "../components/HideChatVertical";
+import HideChatHorizontal from "../components/HideChatHorizontal";
 
 interface VideoPageProps {
 	videoID: string;
 }
 
 const VideoPage: NextPageWithLayout<VideoPageProps> = ({ videoID }) => {
-	const [buttonText, setButtonText] = useState("Copy Link")
+	const [buttonText, setButtonText] = useState("Copy Link");
+	const [showChat, setShowChat] = useState(true);
 
 	const socket = useSocket("http://localhost:5000");
 	const roomID = useRoomID();
@@ -28,17 +31,27 @@ const VideoPage: NextPageWithLayout<VideoPageProps> = ({ videoID }) => {
 		navigator.clipboard.writeText(window.location.href);
 		setButtonText("Copied!");
 		setTimeout(() => setButtonText("Copy Link"), 3500);
-	}
+	};
+
+	const handleToggleChat = () => {
+		setShowChat(!showChat);
+	};
 
 	return (
 		<div className="flex flex-col lg:flex-row gap-5 sm:gap-10">
 			<Player socket={socket} videoID={videoID} />
-			<div className="relative mx-2 md:mx-0">
-				<Chat socket={socket} />
-				<div className="absolute w-full mt-4 flex flex-col gap-5">
-					<Button className="flex-1" onClick={handleCopyLink}>{buttonText}</Button>
-					<ToggleTheme className="md:hidden self-center aspect-[1] w-[44px] relative" />
+			<div className="flex flex-col lg:flex-row gap-3 mx-2 md:mx-0">
+				<HideChatHorizontal onClick={handleToggleChat} showChat={showChat} />
+				<div className={`relative flex-1 ${!showChat ? "hidden" : ""}`}>
+					<Chat socket={socket} />
+					<div className="absolute w-full mt-4 flex flex-col gap-5">
+						<Button className="flex-1" onClick={handleCopyLink}>
+							{buttonText}
+						</Button>
+						<ToggleTheme className="md:hidden self-center aspect-[1] w-[44px] relative" />
+					</div>
 				</div>
+				<HideChatVertical onClick={handleToggleChat} showChat={showChat} />
 			</div>
 		</div>
 	);
