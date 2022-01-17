@@ -11,7 +11,7 @@ const createNewRoomHandler = (videoID: string) => {
 			const {
 				data: { roomID },
 			} = await axios.post<{ roomID: string }>(
-				"http://localhost:5000/api/rooms",
+				"/api/rooms",
 				{ videoID }
 			);
 

@@ -4,10 +4,10 @@ import { redisClient } from "../index";
 import NotFound from "../errors/NotFound";
 
 export const getVideoID = async (
-	req: Request<{}, {}, { roomID: string }>,
+	req: Request<{ roomID: string }>,
 	res: Response
 ) => {
-	const { roomID } = req.body;
+	const { roomID } = req.params;
 	try {
 		const videoID = await redisClient.get(roomID);
 

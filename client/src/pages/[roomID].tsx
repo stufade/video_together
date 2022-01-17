@@ -44,8 +44,8 @@ const VideoPage: NextPageWithLayout<VideoPageProps> = ({ videoID }) => {
 				<HideChatHorizontal onClick={handleToggleChat} showChat={showChat} />
 				<div className={`relative flex-1 ${!showChat ? "hidden" : ""}`}>
 					<Chat socket={socket} />
-					<div className="absolute w-full mt-4 flex flex-col gap-5">
-						<Button className="flex-1" onClick={handleCopyLink}>
+					<div className="lg:absolute w-full mt-4 pb-4 flex md:block flex-col gap-5">
+						<Button onClick={handleCopyLink}>
 							{buttonText}
 						</Button>
 						<ToggleTheme className="md:hidden self-center aspect-[1] w-[44px] relative" />
@@ -70,7 +70,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			data: { videoID },
 		} = await axios.get<{ videoID: string }>(
 			`http://localhost:5000/api/rooms/${roomID}`,
-			{ data: { roomID } }
 		);
 
 		return { props: { videoID } };
