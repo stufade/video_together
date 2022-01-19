@@ -19,7 +19,7 @@ const VideoPage: NextPageWithLayout<VideoPageProps> = ({ videoID }) => {
 	const [buttonText, setButtonText] = useState("Copy Link");
 	const [showChat, setShowChat] = useState(true);
 
-	const socket = useSocket("http://localhost:5000");
+	const socket = useSocket(process.env.NEXT_PUBLIC_SERVER_URL);
 	const roomID = useRoomID();
 
 	useEffect(() => {
