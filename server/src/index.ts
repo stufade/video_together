@@ -1,34 +1,38 @@
 import "express-async-errors";
 import { Server } from "socket.io";
+import dotenv from "dotenv";
 import express from "express";
 import { createClient } from "redis";
 import cors from "cors";
 import roomsRouter from "./routes/rooms";
 import errorHandler from "./middlewares/error-handler";
 
-export const redisClient = createClient();
+dotenv.config();
+export const redisClient = createClient({
+	url: process.env.REDIS_URL,
+	password: process.env.REDIS_PASSWORD,
+});
+const PORT = process.env.PORT || 5000;
 const main = async () => {
 	redisClient.on("error", (e) => console.log("Redis Client Error", e));
 	await redisClient.connect();
 
 	const app = express();
-	const server = app.listen(5000, () => console.log("listening on 5000"));
+	const server = app.listen(PORT, () => console.log(`listening on ${PORT}`));
 	const io = new Server(server, {
 		cors: {
-			origin: "http://localhost:3000",
+			origin: process.env.CLIENT_URL,
 			methods: ["GET", "POST"],
 		},
 	});
 
-	app.use(cors({ origin: "http://localhost:3000" }));
+	app.use(cors({ origin: process.env.CLIENT_URL }));
 	app.use(express.json());
 
 	app.use("/api/rooms", roomsRouter);
 	app.use(errorHandler);
 
 	io.on("connection", (socket) => {
-		console.log("a user connected", socket.id);
-
 		socket.on("start", (time: number, roomID: string) => {
 			socket.to(roomID).emit("start", time);
 		});
@@ -48,7 +52,7 @@ const main = async () => {
 		socket.on("message", (roomId: string, text: string) => {
 			socket.emit("message", text, true);
 			socket.to(roomId).emit("message", text, false);
-		})
+		});
 
 		socket.on("disconnecting", () => {
 			let roomID = "";

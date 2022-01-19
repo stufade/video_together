@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		const {
 			data: { videoID },
 		} = await axios.get<{ videoID: string }>(
-			`http://localhost:5000/api/rooms/${roomID}`,
+			`${process.env.NEXT_PUBLIC_SERVER_URL}/api/rooms/${roomID}`,
 		);
 
 		return { props: { videoID } };
