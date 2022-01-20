@@ -9,12 +9,12 @@ const ToggleTheme: React.FC<ToggleThemeProps> = ({ className }) => {
 	const { theme, setTheme } = useTheme();
 
 	return (
-		<div className={`${className}`}>
-			<button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+		<div className={`${className || ""}`}>
+			<button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
 				<Image
-					src={`/${theme === "light" ? "moon.svg" : "sun.svg"}`}
+					src={`/${theme === "dark" ? "sun.svg" : "moon.svg"}`}
 					layout="fill"
-					alt="moon"
+					alt="Toggle theme"
 				/>
 			</button>
 		</div>

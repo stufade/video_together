@@ -7,7 +7,7 @@ const Button: React.FC<ButtonProps> = ({ children, onClick, className }) => {
 	return (
 		<div
 			className={`
-				${className ? className : ""}
+				${className || ""}
 				relative bg-white rounded-full dark:gradient grid place-items-center
 				after:content-[''] after:absolute after:-z-10 after:rounded-full after:left-[-2px] after:right-[-2px] after:top-[-2px] after:bottom-[-2px] after:gradient
 				transition-shadow duration-500 hover:shadow-violet-600/25 hover:shadow-xl

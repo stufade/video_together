@@ -21,12 +21,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 		<ThemeProvider attribute="class">
 			<div
 				className={`${
-					containerClassName
-						? containerClassName
-						: "grid"
+					containerClassName || "grid"
 				} h-screen dark:bg-dark dark:text-white place-items-center relative`}
 			>
-				<ToggleTheme className={`absolute right-10 top-10 h-7 w-7 ${toggleThemeClassName}`} />
+				<ToggleTheme className={`absolute right-10 top-10 h-7 w-7 ${toggleThemeClassName || ""}`} />
 				<Component {...pageProps} />
 			</div>
 		</ThemeProvider>
