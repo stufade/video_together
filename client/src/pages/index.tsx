@@ -1,23 +1,47 @@
 import type { NextPage } from "next";
-import createJoinRoomHandler from "../api/createJoinRoomHandler";
-import createNewRoomHandler from "../api/createNewRoomHandler";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import createNewRoom from "../api/createNewRoom";
 import InputForm from "../components/InputForm";
 
 const Home: NextPage = () => {
+	const [loading, setLoading] = useState(false);
+	const router = useRouter();
+
+	const joinRoomHandler = (str: string) => {
+		router.push(`/${str}`);
+	};
+
+	const createNewRoomHandler = async (str: string) => {
+		try {
+			setLoading(true);
+			const roomID = await createNewRoom(str);
+			router.push(`/${roomID}`)
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
-		<div className="flex flex-col gap-16">
-			<InputForm
-				label="Video ID"
-				buttonText="Create Room"
-				placeholder="Paste link or ID"
-				createSubmit={createNewRoomHandler}
-			/>
-			<InputForm
-				label="Room ID"
-				buttonText="Join Room"
-				createSubmit={createJoinRoomHandler}
-			/>
-		</div>
+		<>
+			{loading ? (
+				<div className="loader2">Loading...</div>
+			) : (
+				<div className="flex flex-col gap-16">
+					<InputForm
+						label="Video ID"
+						buttonText="Create Room"
+						placeholder="Paste link or ID"
+						onSubmit={createNewRoomHandler}
+					/>
+					<InputForm
+						label="Room ID"
+						buttonText="Join Room"
+						onSubmit={joinRoomHandler}
+					/>
+				</div>
+			)}
+		</>
 	);
 };
 

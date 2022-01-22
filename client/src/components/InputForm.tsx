@@ -4,14 +4,14 @@ import Button from "./Button";
 interface InputFormProps {
 	label: string;
 	buttonText: string;
-	createSubmit: (str: string) => (e: FormEvent) => void;
+	onSubmit: (str: string) => void;
 	placeholder?: string;
 }
 
 const InputForm: React.FC<InputFormProps> = ({
 	label,
 	buttonText,
-	createSubmit,
+	onSubmit,
 	placeholder
 }) => {
 	const [text, setText] = useState("");
@@ -25,8 +25,14 @@ const InputForm: React.FC<InputFormProps> = ({
 		setText(newText);
 	};
 
+	const handleSubmit = (e: FormEvent) => {
+		e.preventDefault();
+
+		onSubmit(text);
+	}
+
 	return (
-		<form onSubmit={createSubmit(text)} className="flex gap-5 flex-col sm:flex-row">
+		<form onSubmit={handleSubmit} className="flex gap-5 flex-col sm:flex-row">
 			<div
 				className="
                     relative flex items-center w-80

@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next";
 import type { NextPageWithLayout } from "../types/page";
 import Player from "../components/Player";
-import axios from "axios";
 import Chat from "../components/Chat";
 import Button from "../components/Button";
 import ToggleTheme from "../components/ToggleTheme";
@@ -10,6 +9,7 @@ import useSocket from "../hooks/useSocket";
 import useRoomID from "../hooks/useRoomID";
 import HideChatVertical from "../components/HideChatVertical";
 import HideChatHorizontal from "../components/HideChatHorizontal";
+import getVideoID from "../api/getVideoID";
 
 interface VideoPageProps {
 	videoID: string;
@@ -45,9 +45,7 @@ const VideoPage: NextPageWithLayout<VideoPageProps> = ({ videoID }) => {
 				<div className={`relative flex-1 ${!showChat ? "hidden" : ""}`}>
 					<Chat socket={socket} />
 					<div className="lg:absolute w-full mt-4 pb-4 flex md:block flex-col gap-5">
-						<Button onClick={handleCopyLink}>
-							{buttonText}
-						</Button>
+						<Button onClick={handleCopyLink}>{buttonText}</Button>
 						<ToggleTheme className="md:hidden self-center aspect-[1] w-[44px] relative" />
 					</div>
 				</div>
@@ -66,11 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	} = context;
 
 	try {
-		const {
-			data: { videoID },
-		} = await axios.get<{ videoID: string }>(
-			`${process.env.NEXT_PUBLIC_SERVER_URL}/api/rooms/${roomID}`,
-		);
+		const videoID = await getVideoID(roomID as string);
 
 		return { props: { videoID } };
 	} catch (e) {
