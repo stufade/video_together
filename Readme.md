@@ -10,3 +10,4 @@ https://video-together.vercel.app/
 - Node.js/Express.js
 - Typescript
 - Socket.io
+- Redis
